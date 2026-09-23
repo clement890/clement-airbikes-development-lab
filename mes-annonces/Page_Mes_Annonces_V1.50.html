@@ -1,0 +1,1189 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AirBikes — Mes annonces V1.50</title>
+<style>
+:root{
+  --blue:#274b94;--blue2:#274b94;--ink:#172033;--muted:#6b7280;
+  --line:#dfe5ee;--soft:#f5f7fb;--green:#25834d;--red:#c93b49;
+}
+*{box-sizing:border-box} body{margin:0;font-family:Poppins,'Avenir Next',Avenir,'Nunito Sans',Arial,sans-serif;color:var(--ink);background:white}
+button,input,select,textarea{font:inherit}
+.wrap{max-width:1180px;margin:auto;padding:32px 28px 80px}
+h1{margin:0;color:var(--blue2);font-size:34px}.sub{color:var(--muted);margin:5px 0 22px}
+.topActions{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:24px}
+.btn{border:1px solid #b7c9e9;background:#fff;color:var(--blue);border-radius:9px;padding:10px 15px;font-weight:800;cursor:pointer}
+.btn.primary{background:var(--blue);color:#fff;border-color:var(--blue)}
+.toolbar{display:flex;gap:10px;align-items:center;margin:18px 0}
+.search{flex:1;border:1px solid var(--line);border-radius:9px;padding:11px 13px}
+.segment{position:relative;display:grid;grid-template-columns:repeat(3,1fr);width:330px;padding:4px;background:#eef2f7;border:1px solid var(--line);border-radius:10px}
+.segment .slider{position:absolute;top:4px;bottom:4px;width:calc((100% - 8px)/3);left:4px;background:#fff;border:1px solid #b9cdf4;border-radius:7px;box-shadow:0 1px 4px #0001;transition:.2s}
+.segment button{position:relative;z-index:1;border:0;background:transparent;padding:8px 7px;font-size:12px;font-weight:800;color:#687386;cursor:pointer}
+.segment button.active{color:var(--blue)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+.card{border:1px solid var(--line);border-radius:13px;overflow:hidden;background:#fff}
+.photo{height:205px;background:#f6f7f9;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.photo img{width:100%;height:100%;object-fit:contain;display:block;padding:8px;background:#fff}
+.badge{position:absolute;top:10px;left:10px;background:#eaf7ee;color:#247246;border-radius:20px;padding:5px 9px;font-size:11px;font-weight:900}
+.qtyBadge{position:absolute;top:10px;right:10px;background:#172033;color:#fff;border-radius:20px;padding:5px 9px;font-size:11px;font-weight:900}
+.actions{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:9px;border-bottom:1px solid var(--line)}
+.actions button{border:1px solid #c6d4eb;background:white;color:var(--blue);border-radius:8px;padding:10px 6px;font-size:13px;font-weight:850;cursor:pointer;min-height:40px}
+.body{padding:13px}.body h3{margin:0 0 7px}.meta{font-size:12px;color:var(--muted)}
+.qtyline{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:10px;border-top:1px solid #edf0f4}
+.stepper{display:flex;align-items:center;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.stepper button{border:0;background:#f6f8fb;width:30px;height:30px;cursor:pointer;font-weight:900}
+.stepper input{width:52px;border:0;text-align:center;font-weight:850;outline:0}
+
+/* Modal */
+.overlay{position:fixed;inset:0;background:#17203399;display:none;align-items:flex-start;justify-content:center;padding:22px;z-index:50;overflow:auto}
+.overlay.open{display:flex}
+.modal{width:min(960px,100%);background:#fff;border-radius:15px;box-shadow:0 24px 70px #0004;overflow:hidden;margin:auto}
+.modalHead{position:sticky;top:0;z-index:3;background:#fff;border-bottom:1px solid var(--line);padding:18px 22px;display:flex;justify-content:space-between;align-items:center}
+.modalHead h2{margin:0;color:var(--blue2);font-size:22px}.close{border:0;background:#f2f4f7;border-radius:50%;width:34px;height:34px;cursor:pointer}
+.modalBody{padding:22px}
+.section{margin-bottom:24px}.section h3{margin:0 0 12px;color:var(--blue2);font-size:17px}
+.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.field label{display:block;font-size:11px;font-weight:850;color:#596579;margin-bottom:5px}
+.field input,.field select,.field textarea{width:100%;border:1px solid #d9e1ec;border-radius:8px;padding:10px;background:#fff;outline:0}
+.field textarea{min-height:85px;resize:vertical}.wide{grid-column:1/-1}
+
+/* clean one-line motorisation slider */
+.motor{display:grid;grid-template-columns:1fr 1fr;position:relative;background:#eef2f7;border:1px solid var(--line);border-radius:10px;padding:4px;height:44px}
+.motorSlider{position:absolute;top:4px;bottom:4px;left:4px;width:calc(50% - 4px);background:#fff;border:1px solid #b8cdf5;border-radius:7px;box-shadow:0 1px 4px #0001;transition:.2s}
+.motor.electric .motorSlider{transform:translateX(100%)}
+.motor button{z-index:1;border:0;background:transparent;font-weight:850;color:#667085;cursor:pointer}
+.motor button.active{color:var(--blue)}
+
+/* Pricing lives inside the modal flow */
+.priceTabs{display:grid;grid-template-columns:1fr 1fr;background:#eef2f7;padding:4px;border-radius:10px;margin-bottom:13px}
+.priceTabs button{border:0;background:transparent;border-radius:7px;padding:10px;font-weight:850;color:#667085;cursor:pointer}
+.priceTabs button.active{background:var(--blue);color:white}
+.rateGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.rate{border:1px solid var(--line);border-radius:9px;padding:9px}
+.rateTitle{font-size:12px;font-weight:900;margin-bottom:7px}
+.rateFields{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.pf label{display:block;font-size:8px;font-weight:900;margin-bottom:3px}.pf.client label{color:var(--blue)}.pf.owner label{color:var(--green)}
+.money{display:flex;align-items:center;border:1px solid #d8e1ec;border-radius:7px;padding:0 6px}
+.client .money{border-color:#bdd0f7;background:#f8fbff}.owner .money{border-color:#bee2cc;background:#fbfffc}
+.money input{width:100%;min-width:0;border:0;outline:0;padding:7px 0;background:transparent;font-weight:850}.money span{font-size:10px;color:#687386}
+.hidden{display:none}
+.modalFoot{position:sticky;bottom:0;background:#fff;border-top:1px solid var(--line);padding:14px 22px;display:flex;justify-content:flex-end;gap:8px}
+@media(max-width:800px){.grid{grid-template-columns:1fr 1fr}.rateGrid{grid-template-columns:1fr 1fr}}
+@media(max-width:620px){.grid,.formgrid,.rateGrid{grid-template-columns:1fr}.toolbar{align-items:stretch;flex-direction:column}.segment{width:100%}}
+
+/* V14 */
+.modal{width:min(1040px,100%)}
+.modalHead{padding:15px 22px}
+.modalHeadMain{display:flex;flex-direction:column;gap:3px}
+.modalSummary{font-size:11px;color:#667085;font-weight:750}
+.sectionMark{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.sectionNum{width:25px;height:25px;border-radius:50%;background:#eaf1ff;color:#274b94;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:900}
+.sectionMark h3{margin:0!important}
+.rateTable{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}
+.rateHead,.rateRow{display:grid;grid-template-columns:150px 1fr 1fr;align-items:center;gap:10px}
+.rateHead{position:sticky;top:0;z-index:2;background:#f4f6f9;padding:9px 12px;border-bottom:1px solid var(--line);font-size:9px;font-weight:900;color:#667085}
+.rateHead .clientH{color:var(--blue)}.rateHead .ownerH{color:var(--green)}
+.rateRows{max-height:430px;overflow:auto}
+.rateRow{padding:6px 12px;border-bottom:1px solid #edf0f4}
+.rateRow:last-child{border-bottom:0}.rateRow:hover{background:#fafcff}
+.rateDur{font-size:11px;font-weight:850;color:#253047}
+.rateRow .money{height:32px}.rateRow .money input{padding:5px 0;font-size:12px}
+.rateRow .money span{font-size:9px}
+.recommend{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;margin-bottom:11px;border:1px solid #c9d8f3;background:#f7faff;border-radius:9px;font-size:11px;color:#52617a}
+.recommend b{color:#274b94}
+.recommend button{border:1px solid #b9cdf4;background:white;color:#274b94;border-radius:7px;padding:7px 9px;font-size:10px;font-weight:850;cursor:pointer}
+@media(max-width:620px){.rateHead,.rateRow{grid-template-columns:90px 1fr 1fr;gap:5px}.rateRow{padding:6px}}
+
+/* V40 interactive actions */
+.statusBar{display:flex;align-items:center;gap:10px;margin:-7px 0 17px}
+.statusLabel{font-size:12px;font-weight:800;color:#687386}
+.statusSeg{display:flex;gap:5px;background:#f1f4f8;border:1px solid var(--line);border-radius:9px;padding:4px}
+.statusSeg button{border:0;background:transparent;border-radius:6px;padding:7px 11px;font-size:11px;font-weight:850;color:#667085;cursor:pointer}
+.statusSeg button.active{background:#fff;color:var(--blue);box-shadow:0 1px 3px #0001}
+.card.paused{opacity:.72}.card.paused .badge{background:#f1f2f4;color:#697386}
+.actionModal{width:min(900px,100%);background:#fff;border-radius:15px;box-shadow:0 24px 70px #0004;overflow:hidden;margin:auto}
+.previewHero{display:grid;grid-template-columns:1.1fr .9fr;gap:22px}
+.previewHero img{width:100%;height:330px;object-fit:contain;background:#f6f7f9;border-radius:12px}
+.previewInfo h2{margin:0 0 7px;color:var(--blue2)}.previewMeta{color:#667085;font-size:13px;margin-bottom:16px}
+.customerBox{border:1px solid var(--line);border-radius:11px;padding:14px;margin-top:12px}
+.customerBox label{font-size:10px;font-weight:850;color:#667085;display:block;margin-bottom:5px}
+.customerBox input,.customerBox select{width:100%;padding:10px;border:1px solid #d8e1ec;border-radius:8px}
+.customerPrice{font-size:26px;font-weight:900;color:var(--blue2);margin:13px 0 4px}
+.priceModalBody{padding:20px 22px 24px}
+.priceBikeHead{display:flex;gap:12px;align-items:center;margin-bottom:17px;padding-bottom:15px;border-bottom:1px solid var(--line)}
+.priceBikeHead img{width:90px;height:70px;object-fit:contain;background:#f6f7f9;border-radius:8px}
+.confirmBox{padding:22px}.confirmBox h3{margin-top:0;color:var(--blue2)}
+.toast{position:fixed;right:22px;bottom:22px;background:#172033;color:white;padding:11px 15px;border-radius:9px;font-size:12px;font-weight:750;z-index:100;opacity:0;transform:translateY(10px);pointer-events:none;transition:.2s}
+.toast.show{opacity:1;transform:none}
+@media(max-width:700px){.previewHero{grid-template-columns:1fr}.previewHero img{height:230px}}
+
+.typeFilterBar{display:flex;align-items:center;gap:10px;margin:-5px 0 12px}
+.typeFilterSelect{min-width:210px;border:1px solid var(--line);background:#fff;color:#344054;border-radius:9px;padding:8px 10px;font-size:12px;font-weight:750;outline:none}
+.typeFilterSelect:focus{border-color:#9db9ed;box-shadow:0 0 0 3px #eaf1ff}
+
+/* V40 — polish de la modale création / édition */
+#overlay .modal{border:1px solid #e5eaf2}
+#overlay .modalHead{
+  background:linear-gradient(180deg,#ffffff 0%,#fbfcff 100%);
+  padding:19px 24px;
+}
+#overlay .modalHead h2{font-size:24px;letter-spacing:-.35px;color:#274b94}
+#overlay .modalSummary{margin-top:4px;color:#718096;font-weight:650}
+#overlay .modalBody{padding:24px;background:#fcfdff}
+#overlay .section{
+  background:#fff;border:1px solid #e3e9f2;border-radius:14px;
+  padding:19px;margin-bottom:18px;box-shadow:0 2px 8px rgba(28,56,105,.035)
+}
+#overlay .sectionMark{
+  margin:-2px 0 17px;padding:10px 12px;border-radius:10px;
+  background:linear-gradient(90deg,#edf4ff 0%,#f8fbff 72%,#fff 100%)
+}
+#overlay .sectionMark h3{font-size:18px;color:#274b94;letter-spacing:-.15px}
+#overlay .sectionNum{
+  width:29px;height:29px;background:#274b94;color:#fff;
+  box-shadow:0 3px 8px rgba(40,89,184,.2)
+}
+#overlay .field label{
+  font-size:12px;letter-spacing:0;text-transform:none;
+  color:#43516a;font-weight:800;margin:0 0 7px 2px
+}
+#overlay .field input,#overlay .field select,#overlay .field textarea{
+  border:1px solid #d7e0ed;border-radius:9px;padding:11px 12px;
+  color:#24324a;background:#fff;transition:.16s;
+}
+#overlay .field input:focus,#overlay .field select:focus,#overlay .field textarea:focus{
+  border-color:#7da3ea;box-shadow:0 0 0 3px #edf3ff
+}
+#overlay .field textarea{line-height:1.45}
+#overlay .motor{
+  background:#f1f4f8;height:48px;border-color:#d9e1ec
+}
+#overlay .motorSlider{border-color:#a9c3f3;box-shadow:0 2px 7px rgba(40,89,184,.11)}
+#overlay .motor button{font-size:13px}
+#overlay .motor button.active{color:#274b94}
+#overlay .stepper{height:43px;border-color:#d7e0ed;background:#fff}
+#overlay .stepper button{height:41px;color:#274b94;font-size:18px}
+#overlay .stepper input{font-size:14px;color:#274b94}
+#overlay .priceTabs{background:#edf1f7;padding:5px;border-radius:11px}
+#overlay .priceTabs button{font-size:13px;padding:11px}
+#overlay .priceTabs button.active{background:#274b94;box-shadow:0 3px 8px rgba(40,89,184,.18)}
+#overlay .recommend{
+  background:linear-gradient(90deg,#f2f7ff,#fbfdff);
+  border-color:#c9d9f6;color:#586984;padding:12px 14px
+}
+#overlay .recommend b{color:#274b94}
+#overlay .rateTable{border-color:#dce4ef}
+#overlay .rateHead{
+  background:#f4f7fb;color:#647087;font-size:10px;padding:10px 12px
+}
+#overlay .rateHead .clientH{color:#274b94}
+#overlay .rateHead .ownerH{color:#21824d}
+#overlay .rateDur{font-size:12px;color:#344054}
+#overlay .client .money{background:#f4f8ff;border-color:#b8cef7}
+#overlay .owner .money{background:#f3fbf6;border-color:#b9dfc7}
+#overlay .client .money input{color:#274b94}
+#overlay .owner .money input{color:#24784a}
+#overlay .modalFoot{padding:15px 24px;background:#fff}
+#overlay .modalFoot .btn.primary{box-shadow:0 4px 10px rgba(40,89,184,.18)}
+/* accent visuel sur valeur et quantité */
+#overlay .field:nth-child(6) input{background:#f7faff;border-color:#c7d7f3}
+
+/* V40 — identité AirBikes + typographie plus chaleureuse */
+:root{--blue:#274b94;--blue2:#274b94}
+body,button,input,select,textarea{
+  font-family:Poppins,'Avenir Next',Avenir,'Nunito Sans',Arial,sans-serif;
+}
+#overlay .modalHead h2{
+  color:#274b94;
+  font-weight:700;
+  letter-spacing:-.45px;
+}
+#overlay .modalSummary{
+  font-weight:500;
+  letter-spacing:-.05px;
+}
+#overlay .sectionMark{
+  background:linear-gradient(90deg,#eef3fb 0%,#f8faff 72%,#fff 100%);
+}
+#overlay .sectionMark h3{
+  color:#274b94;
+  font-weight:700;
+  letter-spacing:-.25px;
+}
+#overlay .sectionNum{
+  background:#274b94;
+  box-shadow:0 3px 8px rgba(39,75,148,.20);
+}
+#overlay .field label{
+  color:#40506c;
+  font-size:12px;
+  font-weight:600;
+  margin-bottom:8px;
+  letter-spacing:.02px;
+}
+#overlay .field input,
+#overlay .field select{
+  min-height:46px;
+  padding:11px 13px;
+  font-size:14px;
+  font-weight:500;
+  color:#26344e;
+  border-color:#d5deeb;
+  border-radius:10px;
+}
+#overlay .field textarea{
+  padding:12px 13px;
+  font-size:13px;
+  font-weight:400;
+  color:#34435e;
+  border-radius:10px;
+}
+#overlay .field input:focus,
+#overlay .field select:focus,
+#overlay .field textarea:focus{
+  border-color:#7895cf;
+  box-shadow:0 0 0 3px rgba(39,75,148,.09);
+}
+#overlay .motor button{
+  font-weight:600;
+  letter-spacing:-.1px;
+}
+#overlay .motor button.active{color:#274b94}
+#overlay .stepper button{color:#274b94;font-weight:700}
+#overlay .stepper input{color:#274b94;font-weight:600}
+#overlay .priceTabs button{font-weight:600}
+#overlay .priceTabs button.active{
+  background:#274b94;
+  box-shadow:0 3px 8px rgba(39,75,148,.18);
+}
+#overlay .recommend b{color:#274b94}
+#overlay .rateHead .clientH{color:#274b94}
+#overlay .client .money input{color:#274b94}
+#overlay .modalFoot .btn.primary{
+  background:#274b94;
+  border-color:#274b94;
+  box-shadow:0 4px 10px rgba(39,75,148,.18);
+}
+
+/* V40 — lisibilité globale renforcée */
+body{font-size:16px}
+button,input,select,textarea{font-size:15px}
+
+h1{font-size:34px}
+.subtitle{font-size:15px}
+.breadcrumb{font-size:14px}
+.stripe{font-size:14px}
+.btn{font-size:14px}
+.search input,.filter select{font-size:14px}
+.statusLabel{font-size:14px}
+.statusBar button{font-size:13px}
+.typeFilterSelect{font-size:14px}
+
+.card h3{font-size:19px;line-height:1.25}
+.chip{font-size:12px}
+.status{font-size:13px}
+.ref{font-size:12px}
+.qtyBadge{font-size:12px}
+.qtyLabel{font-size:13px}
+
+.card .btn{font-size:13px}
+
+#overlay .modalHead h2{font-size:27px}
+#overlay .modalSummary{font-size:14px}
+#overlay .sectionMark h3{font-size:20px}
+#overlay .field label{font-size:14px}
+#overlay .field input,
+#overlay .field select{font-size:16px;min-height:50px}
+#overlay .field textarea{font-size:15px;line-height:1.5}
+#overlay .motor button{font-size:15px}
+#overlay .stepper input{font-size:16px}
+#overlay .priceTabs button{font-size:15px}
+#overlay .recommend{font-size:14px;line-height:1.45}
+#overlay .rateHead{font-size:12px}
+#overlay .rateDur{font-size:14px}
+#overlay .money input{font-size:15px}
+#overlay .modalFoot .btn{font-size:15px}
+
+/* V40 — typographie XL, pensée pour une lecture immédiate */
+body{font-size:18px}
+button,input,select,textarea{font-size:17px}
+
+h1{font-size:38px;line-height:1.15}
+.subtitle{font-size:17px}
+.breadcrumb{font-size:16px}
+.stripe{font-size:16px}
+.btn{font-size:16px}
+.search input,.filter select{font-size:16px}
+.statusLabel{font-size:16px}
+.statusBar button{font-size:15px}
+.typeFilterSelect{font-size:16px}
+
+.card h3{font-size:22px;line-height:1.25}
+.chip{font-size:14px}
+.status{font-size:15px}
+.ref{font-size:14px}
+.qtyBadge{font-size:14px}
+.qtyLabel{font-size:15px}
+
+.card .btn{font-size:15px}
+
+/* Modale création / modification */
+#overlay .modalHead h2{font-size:31px;line-height:1.15}
+#overlay .modalSummary{font-size:16px}
+#overlay .sectionMark h3{font-size:23px}
+#overlay .sectionNum{font-size:15px}
+#overlay .field label{font-size:16px;margin-bottom:9px}
+#overlay .field input,
+#overlay .field select{
+  font-size:18px;
+  min-height:54px;
+  padding:13px 14px;
+}
+#overlay .field textarea{
+  font-size:17px;
+  line-height:1.55;
+  padding:14px;
+}
+#overlay .motor{height:54px}
+#overlay .motor button{font-size:17px}
+#overlay .stepper{height:50px}
+#overlay .stepper button{height:48px;font-size:21px}
+#overlay .stepper input{font-size:18px}
+#overlay .priceTabs button{font-size:17px;padding:13px}
+#overlay .recommend{font-size:16px;line-height:1.5}
+#overlay .rateHead{font-size:14px}
+#overlay .rateDur{font-size:16px}
+#overlay .money input{font-size:17px}
+#overlay .modalFoot .btn{font-size:17px;padding:12px 18px}
+
+/* V40 — caractéristiques vélo beaucoup plus affirmées */
+.bikeSpecs{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:8px;
+  margin-top:10px;
+}
+.specChip{
+  display:inline-flex;
+  align-items:center;
+  min-height:34px;
+  padding:7px 12px;
+  border-radius:9px;
+  font-size:14px;
+  line-height:1;
+  font-weight:700;
+  letter-spacing:-.1px;
+  border:1px solid #d5dfef;
+  background:#f7f9fc;
+  color:#274b94;
+}
+.specChip.typeChip{
+  background:#edf3fb;
+  border-color:#c6d5ed;
+  color:#274b94;
+}
+.specChip.sizeChip{
+  background:#f4f5f7;
+  border-color:#d9dde4;
+  color:#344054;
+}
+.specChip.motorChip.electric{
+  background:#fff6df;
+  border-color:#f2d58a;
+  color:#8a5a00;
+}
+.specChip.motorChip.muscular{
+  background:#edf7f1;
+  border-color:#c4e1cf;
+  color:#247047;
+}
+
+/* V40 — projection tarif journalier + total de la location */
+.rateHead.fiveCols,
+.rateRow.fiveCols{
+  grid-template-columns:125px minmax(135px,1fr) minmax(135px,1fr) minmax(115px,.85fr) minmax(115px,.85fr) !important;
+  gap:8px !important;
+}
+.totalCell{
+  min-height:36px;
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  padding:7px 10px;
+  border-radius:8px;
+  font-size:15px;
+  font-weight:700;
+  white-space:nowrap;
+}
+.clientTotal{
+  color:#274b94;
+  background:#eef3fb;
+  border:1px solid #c6d5ed;
+}
+.ownerTotal{
+  color:#247047;
+  background:#edf7f1;
+  border:1px solid #c4e1cf;
+}
+.rateHead.fiveCols .clientH,
+.rateHead.fiveCols .ownerH{
+  font-size:11px;
+  line-height:1.2;
+}
+@media(max-width:800px){
+  .rateTable{overflow-x:auto}
+  .rateHead.fiveCols,.rateRow.fiveCols{min-width:760px}
+}
+
+/* V40 — LLD : projection du total sur toute la durée d'engagement */
+#longRates .totalCell,
+#actionLongRates .totalCell{
+  font-weight:800;
+}
+#longRates .rateHead.fiveCols .clientH,
+#longRates .rateHead.fiveCols .ownerH,
+#actionLongRates .rateHead.fiveCols .clientH,
+#actionLongRates .rateHead.fiveCols .ownerH{
+  white-space:normal;
+}
+
+/* =========================================================
+   V40 — AIRBIKES VISUAL REFRESH
+   Passe purement CSS : aucune nouvelle fonctionnalité.
+   ========================================================= */
+:root{
+  --ab:#274b94;
+  --ab-dark:#1e3d7a;
+  --ab-soft:#f2f5fb;
+  --ab-soft-2:#f7f9fc;
+  --ink:#18243a;
+  --muted:#68758b;
+  --line:#e3e8f0;
+  --success:#26734a;
+  --success-bg:#eef8f2;
+  --warning:#8a5a00;
+  --warning-bg:#fff7e5;
+  --danger:#c9362b;
+  --radius:14px;
+  --radius-sm:10px;
+  --shadow:0 8px 26px rgba(25,45,85,.07);
+  --shadow-hover:0 13px 32px rgba(25,45,85,.11);
+}
+
+/* Base */
+body{
+  background:#f6f8fb !important;
+  color:var(--ink) !important;
+  letter-spacing:-.12px;
+}
+h1{
+  color:var(--ab) !important;
+  letter-spacing:-1px !important;
+  font-weight:700 !important;
+}
+.subtitle,.breadcrumb{color:var(--muted) !important}
+
+/* Header / navigation */
+.topbar,.header{
+  background:rgba(255,255,255,.96) !important;
+  border-bottom:1px solid var(--line) !important;
+}
+.btn{
+  border-radius:10px !important;
+  font-weight:650 !important;
+  transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease !important;
+}
+.btn.primary{
+  background:var(--ab) !important;
+  border-color:var(--ab) !important;
+  box-shadow:0 5px 14px rgba(39,75,148,.16) !important;
+}
+.btn:hover{transform:translateY(-1px)}
+
+/* Zone de contrôle */
+.toolbar{
+  background:#fff !important;
+  border:1px solid var(--line) !important;
+  border-radius:var(--radius) !important;
+  padding:12px !important;
+  box-shadow:0 3px 14px rgba(25,45,85,.04) !important;
+  margin-bottom:12px !important;
+}
+.search input,.filter select,.typeFilterSelect{
+  background:var(--ab-soft-2) !important;
+  border:1px solid #dce3ed !important;
+  border-radius:10px !important;
+  min-height:42px !important;
+}
+.search input:focus,.filter select:focus,.typeFilterSelect:focus{
+  background:#fff !important;
+  border-color:#9fb2d7 !important;
+  box-shadow:0 0 0 3px rgba(39,75,148,.08) !important;
+}
+.statusBar,.typeFilterBar{
+  margin-top:0 !important;
+  margin-bottom:12px !important;
+}
+.statusSeg{
+  background:#edf1f6 !important;
+  border:0 !important;
+  border-radius:10px !important;
+  padding:4px !important;
+}
+.statusSeg button{
+  min-height:35px;
+  border-radius:8px !important;
+  font-weight:650 !important;
+}
+.statusSeg button.active{
+  color:var(--ab) !important;
+  box-shadow:0 2px 7px rgba(25,45,85,.08) !important;
+}
+
+/* Cartes */
+.grid{gap:20px !important}
+.card{
+  background:#fff !important;
+  border:1px solid var(--line) !important;
+  border-radius:16px !important;
+  overflow:hidden !important;
+  box-shadow:var(--shadow) !important;
+  transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease !important;
+}
+.card:hover{
+  transform:translateY(-2px);
+  box-shadow:var(--shadow-hover) !important;
+  border-color:#d3dceb !important;
+}
+.photo{
+  background:linear-gradient(180deg,#fbfcfe 0%,#f5f7fa 100%) !important;
+  border-bottom:1px solid #edf0f5;
+}
+.photo img{mix-blend-mode:multiply}
+.badge{
+  border-radius:999px !important;
+  box-shadow:0 2px 7px rgba(0,0,0,.06);
+}
+.qtyBadge{
+  background:var(--ab) !important;
+  border-radius:999px !important;
+  min-width:29px;
+  min-height:29px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.body{padding:18px !important}
+.body h3{
+  color:var(--ink) !important;
+  margin-bottom:4px !important;
+  letter-spacing:-.45px !important;
+}
+
+/* Specs : importantes mais plus sobres */
+.bikeSpecs{
+  gap:6px !important;
+  margin-top:10px !important;
+}
+.specChip{
+  min-height:31px !important;
+  padding:6px 10px !important;
+  border-radius:8px !important;
+  font-size:13px !important;
+  border:0 !important;
+  font-weight:650 !important;
+}
+.specChip.typeChip{
+  color:var(--ab) !important;
+  background:var(--ab-soft) !important;
+}
+.specChip.sizeChip{
+  color:#49566c !important;
+  background:#f1f3f6 !important;
+}
+.specChip.motorChip.electric{
+  color:var(--warning) !important;
+  background:var(--warning-bg) !important;
+}
+.specChip.motorChip.muscular{
+  color:var(--success) !important;
+  background:var(--success-bg) !important;
+}
+.qtyline{
+  margin-top:15px !important;
+  padding-top:14px !important;
+  border-top:1px solid #edf0f4 !important;
+}
+
+/* Actions */
+.actions{
+  background:#fbfcfe !important;
+  border-top:1px solid #edf0f4 !important;
+  border-bottom:1px solid #edf0f4 !important;
+  padding:8px 10px !important;
+  gap:7px !important;
+}
+/* Modales */
+
+.modal,.actionModal{
+  border:1px solid rgba(227,232,240,.9) !important;
+  border-radius:18px !important;
+  box-shadow:0 26px 75px rgba(19,34,65,.18) !important;
+}
+.modalHead{
+  padding:22px 26px !important;
+  border-bottom:1px solid var(--line) !important;
+  background:#fff !important;
+}
+.modalHead h2{
+  color:var(--ab) !important;
+  letter-spacing:-.7px !important;
+}
+.modalBody{background:#f8fafd !important;padding:22px !important}
+.section{
+  border:1px solid var(--line) !important;
+  border-radius:15px !important;
+  box-shadow:0 3px 12px rgba(25,45,85,.035) !important;
+  padding:20px !important;
+}
+.sectionMark{
+  background:transparent !important;
+  padding:0 0 13px !important;
+  border-bottom:1px solid #edf0f5;
+  border-radius:0 !important;
+}
+.sectionNum{
+  background:var(--ab) !important;
+  width:31px !important;
+  height:31px !important;
+}
+.sectionMark h3{color:var(--ink) !important}
+.field label{
+  color:#48566d !important;
+  font-weight:650 !important;
+}
+.field input,.field select,.field textarea{
+  background:#fff !important;
+  border:1px solid #d9e1ec !important;
+  border-radius:10px !important;
+  box-shadow:0 1px 2px rgba(25,45,85,.02);
+}
+.field input:focus,.field select:focus,.field textarea:focus{
+  border-color:#8fa7d3 !important;
+  box-shadow:0 0 0 3px rgba(39,75,148,.08) !important;
+}
+
+/* Pricing */
+.priceTabs{
+  background:#e9edf4 !important;
+  border-radius:11px !important;
+  padding:4px !important;
+}
+.priceTabs button{
+  border-radius:8px !important;
+  font-weight:650 !important;
+}
+.priceTabs button.active{
+  background:var(--ab) !important;
+  box-shadow:0 3px 9px rgba(39,75,148,.16) !important;
+}
+.recommend{
+  background:var(--ab-soft) !important;
+  border:0 !important;
+  border-left:3px solid var(--ab) !important;
+  border-radius:8px !important;
+}
+.rateTable{
+  border:1px solid var(--line) !important;
+  border-radius:12px !important;
+  overflow:hidden;
+  background:#fff;
+}
+.rateHead{
+  background:#f0f3f8 !important;
+  border-bottom:1px solid var(--line) !important;
+  color:#5e6c82 !important;
+  font-weight:700 !important;
+}
+.rateRow{
+  background:#fff !important;
+  border-bottom:1px solid #edf0f4 !important;
+  transition:background .12s ease;
+}
+.rateRow:hover{background:#fafcff !important}
+.rateRow:last-child{border-bottom:0 !important}
+.money{
+  border-radius:8px !important;
+  min-height:39px;
+}
+.client .money{
+  background:#f3f6fc !important;
+  border:1px solid #ccd8ed !important;
+}
+.owner .money{
+  background:#f1f8f4 !important;
+  border:1px solid #cce3d5 !important;
+}
+.client .money input{color:var(--ab) !important;font-weight:700 !important}
+.owner .money input{color:var(--success) !important;font-weight:700 !important}
+.totalCell{
+  border:0 !important;
+  min-height:39px !important;
+  font-size:15px !important;
+}
+.clientTotal{
+  background:#eaf0fa !important;
+  color:var(--ab) !important;
+}
+.ownerTotal{
+  background:#e8f5ed !important;
+  color:var(--success) !important;
+}
+.modalFoot{
+  border-top:1px solid var(--line) !important;
+  background:#fff !important;
+  padding:16px 24px !important;
+}
+
+/* Petits détails */
+.close{
+  background:#f2f4f7 !important;
+  border-radius:999px !important;
+}
+.close:hover{background:#e8edf4 !important}
+.toast{border-radius:11px !important;box-shadow:0 10px 30px rgba(0,0,0,.16)}
+
+/* V41 — actions lisibles et homogènes sur les cartes */
+.actions{grid-template-columns:repeat(3,minmax(0,1fr)) !important;gap:7px !important}
+.actions button.bikeAction{
+  display:flex !important;align-items:center !important;justify-content:center !important;
+  gap:5px !important;min-width:0 !important;height:44px !important;min-height:44px !important;
+  padding:5px 4px !important;font-family:inherit !important;font-size:11px !important;
+  font-weight:700 !important;line-height:1.15 !important;color:#274b94 !important;
+  background:#fff !important;border:1px solid #d7e0ef !important;border-radius:9px !important;
+}
+.actions button.bikeAction svg,
+.actions button.bikeAction[data-action-icon="view"] svg{
+  flex:none !important;width:18px !important;height:18px !important;
+  fill:none !important;stroke:currentColor !important;stroke-width:1.8 !important;
+  vector-effect:none !important;
+}
+.actions button.bikeAction span{display:block;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.actions button.bikeAction.danger{color:#bd3640 !important}
+.actions button.bikeAction:hover{background:#edf3ff !important;border-color:#99b3e1 !important}
+.actions button.bikeAction.danger:hover{background:#fff1f2 !important;border-color:#edb7bd !important}
+.actions button.bikeAction:focus-visible{outline:3px solid #8cafe9;outline-offset:2px}
+@media(max-width:360px){.actions button.bikeAction{font-size:10px !important;gap:3px !important}.actions button.bikeAction svg{width:16px !important;height:16px !important}}
+
+/* V44 — aperçu de la carte visible sur la page publique */
+#previewOverlay .actionModal{width:min(540px,100%)}
+#previewOverlay .modalBody{padding:18px;background:#f8faff}
+.customerListing{border:1px solid #dce4f1;border-radius:16px;background:#fff;overflow:hidden;box-shadow:0 8px 20px rgba(30,54,97,.06)}
+.customerListingPhoto{height:275px;position:relative;background:#fff}
+.customerListingPhoto img{width:100%;height:100%;object-fit:contain;display:block}
+.customerListingPhoto>span{position:absolute;top:12px;right:12px;background:#364154;color:#fff;border-radius:999px;padding:7px 10px;font-size:12px;font-weight:800}
+.customerListingBody{padding:17px 20px 20px}
+.customerListingBody h2{font-size:21px;margin:0 0 10px;color:#19283e;line-height:1.3}
+.customerListingSpecs{display:flex;flex-wrap:wrap;gap:6px}
+.customerListingSpecs span{padding:5px 8px;background:#f0f3f8;border-radius:6px;font-size:12px;font-weight:650;color:#52617a}
+.customerListingStock{color:#356b55;font-size:13px;font-weight:700;background:#f0f9f4;padding:8px 10px;border-radius:7px;margin-top:13px;width:max-content;max-width:100%}
+.customerListingPrice{border-top:1px solid #e6ebf3;margin-top:15px;padding-top:15px}
+.customerListingPrice>span{display:block;color:#667085;font-size:11px;font-weight:800;letter-spacing:.04em}
+.customerListingPrice strong{display:block;font-size:30px;color:#19283e;line-height:1.3;margin-top:3px}
+.customerListingPrice small{font-size:20px}
+/* V45 — pied de carte identique à la page publique */
+.customerListingFooter{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;border-top:1px solid #e6ebf3;margin-top:15px;padding-top:15px}
+.customerListingFooter .customerListingPrice{border:0;margin:0;padding:0;min-width:0}
+.customerListingPrice p{font-size:12px;line-height:1.35;color:#667085;margin:3px 0 0}
+.customerListingAdd{flex:none;border:1px solid #274b94;border-radius:11px;background:#274b94;color:#fff;padding:10px 13px;font-size:14px;font-weight:800;min-height:42px;cursor:pointer;white-space:nowrap}
+.customerListingAdd:hover{background:#1e3b78}.customerListingAdd:focus-visible{outline:3px solid #8cafe9;outline-offset:2px}
+@media(max-width:620px){#previewOverlay .modalBody{padding:10px}.customerListingPhoto{height:225px}.customerListingBody{padding:15px}.customerListingBody h2{font-size:19px}}
+
+/* V47 — sélection de la photo */
+.photoUpload{display:flex;align-items:center;gap:18px;padding:14px;border:1px dashed #adc2e6;border-radius:12px;background:#f6f9ff}
+.photoUploadPreview{width:142px;height:105px;flex:none;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid #dce5f2;border-radius:9px;background:white;color:#7a8799;text-align:center;font-size:12px}
+.photoUploadPreview img{width:100%;height:100%;object-fit:contain}
+.photoUploadControls{display:flex;flex-direction:column;align-items:flex-start;gap:9px;min-width:0}
+.photoUploadInput{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden}
+#overlay .field label.photoUploadButton{display:inline-flex;align-items:center;justify-content:center;width:auto;min-height:44px;margin:0;padding:10px 17px;border:1px solid #274b94;border-radius:9px;background:#274b94;color:white;font-size:14px;font-weight:800;cursor:pointer;text-transform:none;letter-spacing:0}
+#overlay .field label.photoUploadButton:hover{background:#1e3b78}
+.photoUploadInput:focus-visible + .photoUploadButton{outline:3px solid #8cafe9;outline-offset:2px}
+.photoUploadName{color:#64748b;font-size:12px;overflow-wrap:anywhere}
+@media(max-width:480px){.photoUpload{flex-direction:column;align-items:stretch}.photoUploadPreview{width:100%;height:155px}.photoUploadControls{align-items:stretch}#overlay .field label.photoUploadButton{width:100%}}
+
+/* V48 — photo et description côte à côte */
+.photoDescriptionGrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;align-items:start}
+.photoDescriptionGrid>.field{min-width:0}
+.photoDescriptionGrid .photoUpload{min-height:184px;flex-direction:column;align-items:stretch;gap:10px}
+.photoDescriptionGrid .photoUploadPreview{width:100%;height:105px}
+.photoDescriptionGrid .photoUploadControls{flex-direction:row;align-items:center;flex-wrap:wrap}
+#overlay .field label.photoUploadButton{color:#fff !important;background:#274b94 !important;-webkit-text-fill-color:#fff}
+#overlay .field label.photoUploadButton:hover{background:#1e3b78 !important}
+#overlay .descriptionField textarea{min-height:151px;resize:vertical}
+.descriptionHint{font-size:12px;line-height:1.4;color:#667085;margin-top:7px}
+.descriptionReset{border:0;background:none;color:#274b94;font-weight:750;padding:6px 0;cursor:pointer;text-align:left;font-size:12px}
+.descriptionReset:hover{text-decoration:underline}
+@media(max-width:700px){.photoDescriptionGrid{grid-template-columns:1fr}.photoDescriptionGrid .photoUpload{min-height:0}.photoDescriptionGrid .photoUploadPreview{height:155px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Mes annonces</h1>
+  <div class="sub">Gérez vos vélos et leur disponibilité à la location.</div>
+  <div class="topActions">
+    <button class="btn primary" onclick="openModal()">＋ Ajouter des vélos</button>
+    <button class="btn">↗ mes vélos</button><button class="btn">▣ Générer mes affiches</button><button class="btn">€ Gestion des prix</button>
+  </div>
+
+  <div class="toolbar">
+    <input class="search" placeholder="Rechercher un vélo, une marque, un modèle…">
+    <div class="segment" id="filterSeg"><div class="slider"></div>
+      <button class="active" onclick="filterMotor(0,this)">Tous</button>
+      <button onclick="filterMotor(1,this)">⚡ Électrique</button>
+      <button onclick="filterMotor(2,this)">🚲 Musculaire</button>
+    </div>
+  </div>
+  <div class="typeFilterBar">
+    <span class="statusLabel">Type :</span>
+    <select id="typeFilter" class="typeFilterSelect" onchange="setTypeFilter(this.value)"><option value="all">Tous les types</option><option>VTT</option><option>VTC/Ville</option><option>Route</option><option>HandiVélo</option><option>Gravel</option><option>Cargo</option><option>Tandem</option><option>Chrono/Triathlon</option><option>Beach Bikes</option><option>Vélo pliant</option><option>Trottinette</option><option>Remorque</option></select>
+  </div>
+  <div class="statusBar">
+    <span class="statusLabel">Afficher :</span>
+    <div class="statusSeg" id="statusSeg">
+      <button class="active" onclick="setStatusFilter('active',this)">Actives <span id="activeCount"></span></button>
+      <button onclick="setStatusFilter('paused',this)">En pause <span id="pausedCount"></span></button>
+      <button onclick="setStatusFilter('all',this)">Toutes <span id="allCount"></span></button>
+    </div>
+  </div>
+
+  <div class="grid" id="cards"></div>
+</div>
+
+<div class="overlay" id="overlay" onclick="if(event.target===this)closeModal()">
+ <div class="modal">
+  <div class="modalHead"><div class="modalHeadMain"><h2 id="modalTitle">Créer une nouvelle annonce</h2><div class="modalSummary" id="modalSummary">Giant Trance X E+ 1 · Taille L · 🚲 Musculaire · ×1</div></div><button class="close" onclick="closeModal()">×</button></div>
+  <div class="modalBody">
+   <div class="section">
+    <div class="sectionMark"><span class="sectionNum">1</span><h3>Le vélo</h3></div>
+    <div class="formgrid">
+      <div class="field"><label>Marque</label><input value="Giant"></div>
+      <div class="field"><label>Modèle</label><input value="Trance X E+ 1"></div>
+      <div class="field"><label>Type de vélo</label><select><option>VTT</option><option>VTC/Ville</option><option>Route</option><option>HandiVélo</option><option>Gravel</option><option>Cargo</option><option>Tandem</option><option>Chrono/Triathlon</option><option>Beach Bikes</option><option>Vélo pliant</option><option>Trottinette</option><option>Remorque</option></select></div>
+      <div class="field"><label>Taille</label><select><option>Enfant</option><option>XS</option><option>S</option><option>M</option><option selected>L</option><option>XL</option><option>XXL</option><option>Taille unique</option></select></div>
+      <div class="field wide"><label>Motorisation</label>
+        <div class="motor" id="motor"><div class="motorSlider"></div>
+          <button class="active" onclick="setMotor(false,this)">🚲 Musculaire</button>
+          <button onclick="setMotor(true,this)">⚡ Électrique</button>
+        </div>
+      </div>
+      <div class="field"><label>Valeur du vélo (€)</label><input type="number" value="2500"></div>
+      <div class="field"><label>Nombre d’exemplaires</label><div class="stepper"><button onclick="stepModal(-1)">−</button><input id="modalQty" type="number" value="1" min="1"><button onclick="stepModal(1)">+</button></div></div>
+      <div class="wide sectionMark" style="margin-top:7px"><span class="sectionNum">2</span><h3>Photos & description</h3></div>
+      <div class="photoDescriptionGrid wide">
+        <div class="field"><label>Photo principale</label><div class="photoUpload"><div class="photoUploadPreview" id="photoUploadPreview"><span>Aucune photo sélectionnée</span></div><div class="photoUploadControls"><input id="bikePhotoInput" class="photoUploadInput" type="file" accept="image/*" onchange="updateBikePhoto(this)"><label for="bikePhotoInput" class="photoUploadButton">Ajouter une photo</label><span id="photoUploadName" class="photoUploadName">JPG, PNG ou WebP</span></div></div></div>
+        <div class="field descriptionField"><label for="bikeDescription">Description de l’annonce</label><textarea id="bikeDescription" oninput="descriptionEdited=true"></textarea><div class="descriptionHint">Générée à partir de la marque et du modèle. Vous pouvez la modifier.</div><button class="descriptionReset" type="button" onclick="resetBikeDescription()">Regénérer la description</button></div>
+      </div>
+    </div>
+   </div>
+
+   <div class="section">
+    <div class="sectionMark"><span class="sectionNum">3</span><h3>Tarification</h3></div>
+    <div style="font-size:12px;color:#667085;margin:-5px 0 12px">Tous les tarifs sont visibles directement dans cette modale.</div>
+    <div class="priceTabs">
+      <button class="active" onclick="priceTab('short',this)">Courte durée</button>
+      <button onclick="priceTab('long',this)">Longue durée</button>
+    </div>
+    <div class="recommend"><span>💡 <b>Tarifs recommandés</b> calculés à partir de la valeur du vélo. Vous pouvez tout modifier.</span><button type="button" onclick="applyRecommended()">Réappliquer les tarifs conseillés</button></div>
+<div class="rateTable" id="shortRates"></div>
+    <div class="rateTable hidden" id="longRates"></div>
+   </div>
+  </div>
+  <div class="modalFoot"><button class="btn" onclick="closeModal()">Annuler</button><button class="btn primary" id="saveBikeButton" onclick="createBike()">Créer l’annonce</button></div>
+ </div>
+</div>
+
+
+<div class="overlay" id="previewOverlay" onclick="if(event.target===this)closeAction('previewOverlay')">
+ <div class="actionModal">
+  <div class="modalHead"><div><h2>Aperçu locataire</h2><div class="modalSummary">Photo, caractéristiques et prix du vélo.</div></div><button class="close" onclick="closeAction('previewOverlay')">×</button></div>
+  <div class="modalBody" id="previewContent"></div>
+ </div>
+</div>
+
+<div class="overlay" id="priceOverlay" onclick="if(event.target===this)closeAction('priceOverlay')">
+ <div class="actionModal">
+  <div class="modalHead"><div><h2>Gestion des prix</h2><div class="modalSummary" id="priceSummary"></div></div><button class="close" onclick="closeAction('priceOverlay')">×</button></div>
+  <div class="priceModalBody">
+   <div id="priceBikeHead"></div>
+   <div class="priceTabs"><button class="active" onclick="actionPriceTab('short',this)">Courte durée</button><button onclick="actionPriceTab('long',this)">Longue durée</button></div>
+   <div class="rateTable" id="actionShortRates"></div>
+   <div class="rateTable hidden" id="actionLongRates"></div>
+  </div>
+ </div>
+</div>
+
+<div class="overlay" id="confirmOverlay" onclick="if(event.target===this)closeAction('confirmOverlay')">
+ <div class="actionModal" style="max-width:470px">
+  <div class="confirmBox"><h3>Supprimer définitivement cette annonce ?</h3><p style="color:#667085;font-size:13px">Cette action retire complètement l'annonce. Pour la rendre temporairement indisponible, utilisez plutôt « Pause ».</p>
+  <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:18px"><button class="btn" onclick="closeAction('confirmOverlay')">Annuler</button><button class="btn" style="border-color:#efc2c8;color:#b52f3d" onclick="confirmDelete()">Supprimer</button></div></div>
+ </div>
+</div>
+<div class="toast" id="toast">Bientôt disponible</div>
+
+<script>
+const bikes=[
+ {name:'Giant Trance X E+ 1',type:'VTT',size:'L',electric:true,qty:2,active:true,dayPrice:69,img:'https://cdn.cleanrider.com/uploads/2022/05/vtt-electriques-giant-trance-x-e-1-2022-cleanrider-5.jpg'},
+ {name:'Cannondale Moterra Neo',type:'VTT',size:'M',electric:true,qty:1,active:true,dayPrice:49,img:'https://embed.widencdn.net/img/dorelrl/yxdhdtp6ur/1560px%401x/C21_C65201M_Moterra_Neo_Crb_ALP_3Q.jpg?color=FFFFFF&q=90'},
+ {name:'Trek Émonda SL 6',type:'Route',size:'L',electric:false,qty:4,active:true,dayPrice:49,img:'https://media.trekbikes.com/image/upload/EmondaSL6-24-41352-A-Portrait.jpg'}
+];
+let statusFilter='active';
+let motorFilter=0;
+let bikeTypeFilter='all';
+function render(){
+ const shown=bikes.map((b,i)=>({b,i})).filter(({b})=>{
+   const statusOk=statusFilter==='all'||(statusFilter==='active'&&b.active)||(statusFilter==='paused'&&!b.active);
+   const motorOk=motorFilter===0||(motorFilter===1&&b.electric)||(motorFilter===2&&!b.electric);
+   const typeOk=bikeTypeFilter==='all'||b.type===bikeTypeFilter;
+   return statusOk&&motorOk&&typeOk;
+ });
+ cards.innerHTML=shown.map(({b,i})=>`<div class="card ${b.active?'':'paused'}">
+  <div class="photo"><img src="${b.img}" alt="${b.name}"><span class="badge">${b.active?'● Active':'● En pause'}</span><span class="qtyBadge">×${b.qty}</span></div>
+  <div class="actions">
+    <button class="bikeAction" title="Aperçu locataire" aria-label="Aperçu locataire de ${b.name}" onclick="openPreview(${i})"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M7 13h5M7 16h9"/></svg><span>Aperçu</span></button>
+    <button class="bikeAction" title="Modifier l’annonce" aria-label="Modifier ${b.name}" onclick="openEdit(${i})"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9M4 16.5 16.5 4a2.1 2.1 0 0 1 3 3L7 19.5 3 21z"/></svg><span>Modifier</span></button>
+    <button class="bikeAction" title="${b.active?'Mettre en pause':'Réactiver'}" aria-label="${b.active?'Mettre en pause':'Réactiver'} ${b.name}" onclick="togglePause(${i})"><svg viewBox="0 0 24 24" aria-hidden="true">${b.active?'<rect x="5" y="4" width="5" height="16" rx="1"/><rect x="14" y="4" width="5" height="16" rx="1"/>':'<path d="m7 4 13 8-13 8z"/>'}</svg><span>${b.active?'Pause':'Réactiver'}</span></button>
+    <button class="bikeAction" title="Gérer les prix" aria-label="Gérer les prix de ${b.name}" onclick="openPrice(${i})"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15 8a5 5 0 1 0 0 8M7 11h7M7 14h7"/></svg><span>Prix</span></button>
+    <button class="bikeAction" title="Partager" aria-label="Partager ${b.name}" onclick="shareBike()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V3m-4 4 4-4 4 4M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg><span>Partager</span></button>
+    <button class="bikeAction danger" title="Supprimer" aria-label="Supprimer ${b.name}" onclick="askDelete(${i})"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3m3 0-1 13H7L6 7m4 4v6m4-6v6"/></svg><span>Supprimer</span></button>
+  </div>
+  <div class="body"><h3>${b.name}</h3><div class="bikeSpecs">
+  <span class="specChip typeChip">${b.type}</span>
+  <span class="specChip sizeChip">Taille ${b.size}</span>
+  <span class="specChip motorChip ${b.electric?'electric':'muscular'}">${b.electric?'⚡ Électrique':'🚲 Musculaire'}</span>
+</div>
+   <div class="qtyline"><b>Exemplaires</b><div class="stepper"><button onclick="qty(${i},-1)">−</button><input value="${b.qty}" onchange="setQty(${i},this.value)"><button onclick="qty(${i},1)">+</button></div></div>
+  </div></div>`).join('');
+ activeCount.textContent=`(${bikes.filter(x=>x.active).length})`;
+ pausedCount.textContent=`(${bikes.filter(x=>!x.active).length})`;
+ allCount.textContent=`(${bikes.length})`;
+}
+function qty(i,d){bikes[i].qty=Math.max(1,bikes[i].qty+d);render()}
+function setQty(i,v){bikes[i].qty=Math.max(1,Number(v)||1);render()}
+function filterMotor(pos,btn){
+ motorFilter=pos;
+ document.querySelectorAll('#filterSeg button').forEach(x=>x.classList.remove('active'));btn.classList.add('active');
+ document.querySelector('#filterSeg .slider').style.transform=`translateX(${pos*100}%)`;
+ render();
+}
+function setStatusFilter(mode,btn){
+ statusFilter=mode;
+ document.querySelectorAll('#statusSeg button').forEach(x=>x.classList.remove('active'));btn.classList.add('active');
+ render();
+}
+function setTypeFilter(type){
+ bikeTypeFilter=type;
+ render();
+}
+
+function closeAction(id){document.getElementById(id).classList.remove('open');document.body.style.overflow='';if(id==='priceOverlay')pricingIndex=null}
+function openAction(id){document.getElementById(id).classList.add('open');document.body.style.overflow='hidden'}
+function togglePause(i){
+ bikes[i].active=!bikes[i].active;
+ render();
+ showToast(bikes[i].active?'Annonce réactivée':'Annonce mise en pause');
+}
+function openPreview(i){
+ const b=bikes[i];
+ previewContent.innerHTML=`<article class="customerListing">
+   <div class="customerListingPhoto"><img src="${b.img}" alt="${b.name}"><span>×${b.qty} dispo</span></div>
+   <div class="customerListingBody">
+     <h2>${b.name}</h2>
+     <div class="customerListingSpecs"><span>${b.type}</span><span>${b.size==='Unique'?'Taille unique':'Taille '+b.size}</span><span>${b.electric?'⚡ Électrique':'Musculaire'}</span></div>
+     <div class="customerListingStock">${b.qty} vélo${b.qty>1?'s':''} proposé${b.qty>1?'s':''} à la location</div>
+     <div class="customerListingFooter"><div class="customerListingPrice"><span>PRIX À LA JOURNÉE</span><strong>${fmtMoney(b.dayPrice ?? 49).replace(' €','')} € <small>/ jour</small></strong><p>Choisissez vos dates pour voir le prix total</p></div><button class="customerListingAdd" type="button" title="Ajouter ce vélo" aria-label="Ajouter ${b.name}" onclick="showToast('Choisissez vos dates sur la page du loueur pour ajouter ce vélo')">Ajouter</button></div>
+   </div>
+ </article>`;
+ openAction('previewOverlay');
+}
+function defaultShortRates(dayPrice){
+ const rows=[{client:32,owner:25}];
+ for(let i=1;i<=30;i++){const owner=Math.max(32,45-Math.floor((i-1)/3));rows.push({client:Math.round(owner/.82*100)/100,owner})}
+ if(dayPrice!=null){rows[1].client=dayPrice;rows[1].owner=Math.round(dayPrice*.82*100)/100}
+ return rows;
+}
+function readShortRates(container){
+ return [...container.querySelectorAll('.rateRow')].map(row=>({client:Number(row.querySelector('.client input').value)||0,owner:Number(row.querySelector('.owner input').value)||0}));
+}
+function populateShortRates(container,rates){
+ [...container.querySelectorAll('.rateRow')].forEach((row,i)=>{
+  if(!rates[i])return;
+  row.querySelector('.client input').value=rates[i].client;
+  row.querySelector('.owner input').value=rates[i].owner;
+  updateRateTotals(row.querySelector('.client input'));
+ });
+}
+let pricingIndex=null;
+function buildActionRates(b){
+ const rates=b.shortRates||defaultShortRates(b.dayPrice);
+ actionShortRates.innerHTML=tableWrap(rates.map((r,i)=>rateRow(i===0?'Demi-journée':i===1?'1 jour':i+' jours',r.client,r.owner)).join(''));
+ let lr=[['Sans engagement · 1 mois',89,65],['3 mois',79,57],['6 mois',67,47],['12 mois',52,35],['24 mois',46,30],['36 mois',42,27]].map(x=>rateRow(x[0],x[1],x[2],true)).join('');
+ actionLongRates.innerHTML=tableWrap(lr,true);
+}
+function openPrice(i){
+ pricingIndex=i;const b=bikes[i];
+ priceSummary.textContent=`${b.name} · Taille ${b.size}`;
+ priceBikeHead.innerHTML=`<div class="priceBikeHead"><img src="${b.img}" alt=""><div><b>${b.name}</b><div class="meta">${b.type} · Taille ${b.size} · ${b.electric?'Électrique':'Musculaire'} · ×${b.qty}</div></div></div>`;
+ buildActionRates(b);openAction('priceOverlay');
+}
+function actionPriceTab(mode,b){
+ b.parentElement.querySelectorAll('button').forEach(x=>x.classList.remove('active'));b.classList.add('active');
+ actionShortRates.classList.toggle('hidden',mode!=='short');actionLongRates.classList.toggle('hidden',mode!=='long');
+}
+let deleteIndex=null;
+function askDelete(i){deleteIndex=i;openAction('confirmOverlay')}
+function confirmDelete(){if(deleteIndex!==null)bikes.splice(deleteIndex,1);deleteIndex=null;closeAction('confirmOverlay');render();showToast('Annonce supprimée')}
+function shareBike(){showToast('Partage : on le traitera plus tard')}
+function showToast(txt){toast.textContent=txt;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),1700)}
+
+let selectedBikePhoto=null;
+let descriptionEdited=false;
+function generateBikeDescription(){
+ const fields=[...document.querySelectorAll('.modalBody input')];
+ const brand=fields.find(x=>x.parentElement?.querySelector('label')?.textContent==='Marque')?.value.trim()||'';
+ const model=fields.find(x=>x.parentElement?.querySelector('label')?.textContent==='Modèle')?.value.trim()||'';
+ return [brand,model].filter(Boolean).join(' ') ? `Découvrez le ${[brand,model].filter(Boolean).join(' ')} disponible à la location.` : '';
+}
+function resetBikeDescription(){document.getElementById('bikeDescription').value=generateBikeDescription();descriptionEdited=false}
+function showPhotoPreview(src,name){
+ const preview=document.getElementById('photoUploadPreview');
+ preview.innerHTML=src?`<img src="${src}" alt="Photo du vélo sélectionnée">`:'<span>Aucune photo sélectionnée</span>';
+ document.getElementById('photoUploadName').textContent=name||'JPG, PNG ou WebP';
+}
+function updateBikePhoto(input){
+ const file=input.files?.[0];if(!file)return;
+ if(!file.type.startsWith('image/')){showToast('Choisissez un fichier image');input.value='';return}
+ const reader=new FileReader();reader.onload=()=>{selectedBikePhoto=String(reader.result);showPhotoPreview(selectedBikePhoto,file.name)};
+ reader.readAsDataURL(file);
+}
+function openModal(){
+ selectedBikePhoto=null;document.getElementById('bikePhotoInput').value='';showPhotoPreview(null,null);resetBikeDescription();
+ editingIndex=null;buildRates();modalTitle.textContent='Créer une nouvelle annonce';saveBikeButton.textContent='Créer l’annonce';
+ overlay.classList.add('open');document.body.style.overflow='hidden';updateSummary();
+}
+function closeModal(){overlay.classList.remove('open');document.body.style.overflow=''}
+function setMotor(e,b){motor.classList.toggle('electric',e);motor.querySelectorAll('button').forEach(x=>x.classList.remove('active'));b.classList.add('active');updateSummary()}
+function stepModal(d){modalQty.value=Math.max(1,(Number(modalQty.value)||1)+d);updateSummary()}
+function durationMultiplier(label,monthly=false){
+ if(monthly){
+   if(label.includes('Sans engagement')) return 1;
+   const months=parseInt(label,10);
+   return Number.isFinite(months)?months:1;
+ }
+ if(label==='Demi-journée') return 1;
+ const n=parseInt(label,10);
+ return Number.isFinite(n)?n:1;
+}
+function fmtMoney(v){
+ const n=Math.round((Number(v)||0)*100)/100;
+ return n.toLocaleString('fr-FR',{minimumFractionDigits:Number.isInteger(n)?0:2,maximumFractionDigits:2})+' €';
+}
+function rateRow(label,client,owner,monthly=false){
+ const mult=durationMultiplier(label,monthly);
+ return `<div class="rateRow fiveCols" data-mult="${mult}">
+   <div class="rateDur">${label}</div>
+   <div class="pf client"><div class="money"><input type="number" step="0.01" value="${client}" oninput="fromClient(this)"><span>${monthly?'€/mois':'€/jour'}</span></div></div>
+   <div class="pf owner"><div class="money"><input type="number" step="0.01" value="${owner}" oninput="fromOwner(this)"><span>${monthly?'€/mois':'€/jour'}</span></div></div>
+   <div class="totalCell clientTotal">${fmtMoney(client*mult)}</div>
+   <div class="totalCell ownerTotal">${fmtMoney(owner*mult)}</div>
+ </div>`;
+}
+function tableWrap(rows,monthly=false){
+ return `<div class="rateHead fiveCols">
+   <div>DURÉE</div>
+   <div class="clientH">🔵 CLIENT / ${monthly?'MOIS':'JOUR'}</div>
+   <div class="ownerH">🟢 VOUS / ${monthly?'MOIS':'JOUR'}</div>
+   <div class="clientH">${monthly?'TOTAL CLIENT ENGAGEMENT':'TOTAL CLIENT'}</div>
+   <div class="ownerH">${monthly?'TOTAL REÇU ENGAGEMENT':'TOTAL REÇU'}</div>
+ </div><div class="rateRows">${rows}</div>`;
+}
+function updateRateTotals(input){
+ const row=input.closest('.rateRow');
+ if(!row)return;
+ const mult=Number(row.dataset.mult)||1;
+ const client=Number(row.querySelector('.client input')?.value)||0;
+ const owner=Number(row.querySelector('.owner input')?.value)||0;
+ const ct=row.querySelector('.clientTotal');
+ const ot=row.querySelector('.ownerTotal');
+ if(ct)ct.textContent=fmtMoney(client*mult);
+ if(ot)ot.textContent=fmtMoney(owner*mult);
+ if(row.closest('#actionShortRates')&&pricingIndex!==null){
+  const bike=bikes[pricingIndex];bike.shortRates=readShortRates(actionShortRates);
+  bike.dayPrice=bike.shortRates[1].client;
+ }
+}
+function buildRates(){
+ let rows=rateRow('Demi-journée',32,25);
+ for(let i=1;i<=30;i++){let o=Math.max(32,45-Math.floor((i-1)/3));rows+=rateRow(i===1?'1 jour':i+' jours',Math.round(o/.82*100)/100,o)}
+ shortRates.innerHTML=tableWrap(rows);
+ let lr=[['Sans engagement · 1 mois',89,65],['3 mois',79,57],['6 mois',67,47],['12 mois',52,35],['24 mois',46,30],['36 mois',42,27]].map(x=>rateRow(x[0],x[1],x[2],true)).join('');
+ longRates.innerHTML=tableWrap(lr,true);
+}
+function fromClient(el){el.closest('.rateRow').querySelector('.owner input').value=Math.round(Number(el.value)*.82*100)/100;updateRateTotals(el)}
+function fromOwner(el){el.closest('.rateRow').querySelector('.client input').value=Math.round(Number(el.value)/.82*100)/100;updateRateTotals(el)}
+function priceTab(mode,b){document.querySelectorAll('.priceTabs button').forEach(x=>x.classList.remove('active'));b.classList.add('active');shortRates.classList.toggle('hidden',mode!=='short');longRates.classList.toggle('hidden',mode!=='long')}
+
+let editingIndex=null;
+function updateSummary(){
+ const inputs=[...document.querySelectorAll('.modalBody input')];
+ const brand=inputs.find(x=>x.parentElement?.querySelector('label')?.textContent==='Marque')?.value||'';
+ const model=inputs.find(x=>x.parentElement?.querySelector('label')?.textContent==='Modèle')?.value||'';
+ const selects=[...document.querySelectorAll('.modalBody select')];
+ const size=selects[1]?.value||'';
+ const elec=motor.classList.contains('electric');
+ modalSummary.textContent=`${brand} ${model} · Taille ${size} · ${elec?'⚡ Électrique':'🚲 Musculaire'} · ×${modalQty.value||1}`;
+ if(!descriptionEdited)document.getElementById('bikeDescription').value=generateBikeDescription();
+}
+function applyRecommended(){ buildRates(); }
+document.querySelector('.modalBody').addEventListener('input',updateSummary);
+document.querySelector('.modalBody').addEventListener('change',updateSummary);
+
+function openEdit(i){
+ editingIndex=i; const b=bikes[i];
+ selectedBikePhoto=null;document.getElementById('bikePhotoInput').value='';showPhotoPreview(b.img,'Photo actuelle du vélo');
+ document.getElementById('bikeDescription').value=b.description||generateBikeDescription();descriptionEdited=!!b.description;
+ modalTitle.textContent='Modifier l’annonce';saveBikeButton.textContent='Enregistrer les modifications';
+ const fields=[...document.querySelectorAll('.modalBody input')];
+ const brand=fields.find(x=>x.parentElement?.querySelector('label')?.textContent==='Marque');
+ const model=fields.find(x=>x.parentElement?.querySelector('label')?.textContent==='Modèle');
+ if(brand)brand.value=b.name.split(' ')[0];
+ if(model)model.value=b.name.split(' ').slice(1).join(' ');
+ const selects=[...document.querySelectorAll('.modalBody select')];
+ if(selects[0])selects[0].value=b.type;
+ if(selects[1])selects[1].value=b.size;
+ modalQty.value=b.qty;
+ motor.classList.toggle('electric',b.electric);
+ motor.querySelectorAll('button').forEach((x,j)=>x.classList.toggle('active',j===(b.electric?1:0)));
+ populateShortRates(shortRates,b.shortRates||defaultShortRates(b.dayPrice));
+ overlay.classList.add('open');document.body.style.overflow='hidden'; updateSummary();
+}
+
+function createBike(){
+ const fields=[...document.querySelectorAll('.modalBody input')];
+ const brand=fields.find(x=>x.parentElement?.querySelector('label')?.textContent==='Marque')?.value||'Giant';
+ const model=fields.find(x=>x.parentElement?.querySelector('label')?.textContent==='Modèle')?.value||'Vélo';
+ const selects=[...document.querySelectorAll('.modalBody select')];
+ const old=editingIndex!==null?bikes[editingIndex]:null;
+ const obj={name:(brand+' '+model).trim(),type:selects[0]?.value||'VTT',size:selects[1]?.value||'L',electric:motor.classList.contains('electric'),qty:Number(modalQty.value)||1,active:old?old.active:true,img:selectedBikePhoto||(old?old.img:bikes[0].img),description:document.getElementById('bikeDescription').value.trim(),shortRates:readShortRates(shortRates)};
+ obj.dayPrice=obj.shortRates[1].client;
+ if(editingIndex===null)bikes.unshift(obj); else bikes[editingIndex]=obj;
+ editingIndex=null;render();closeModal();
+}
+buildRates();render();
+</script>
+
+
+
+</body></html>
