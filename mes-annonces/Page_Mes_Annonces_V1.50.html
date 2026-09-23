@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AirBikes — Mes annonces V1.50</title>
+<title>AirBikes — Mes annonces V1.59 · ordinateur</title>
 <style>
 :root{
   --blue:#274b94;--blue2:#274b94;--ink:#172033;--muted:#6b7280;
@@ -827,9 +827,46 @@ h1{
 .descriptionReset{border:0;background:none;color:#274b94;font-weight:750;padding:6px 0;cursor:pointer;text-align:left;font-size:12px}
 .descriptionReset:hover{text-decoration:underline}
 @media(max-width:700px){.photoDescriptionGrid{grid-template-columns:1fr}.photoDescriptionGrid .photoUpload{min-height:0}.photoDescriptionGrid .photoUploadPreview{height:155px}}
+/* Navigation Espace Propriétaire */
+.ownerNav{background:#fff;color:#274b94}
+.ownerBrand{display:flex;align-items:center;gap:8px;min-height:62px;padding:0 max(28px,calc((100vw - 1180px)/2 + 28px));border-bottom:1px solid #dbe1eb;color:#274b94;font-size:22px;font-weight:650;letter-spacing:-.3px}
+.ownerBrand .logoCrop{position:relative;display:block;overflow:hidden;flex:none;width:36px;height:24px}
+.ownerBrand .logoCrop img{position:absolute;display:block;max-width:none;width:47px;height:47px;left:-6px;top:-13px}
+.ownerBreadcrumb{display:flex;align-items:center;gap:18px;max-width:1180px;min-height:62px;margin:auto;padding:10px 28px;color:#274b94;font-size:14px}
+.ownerBreadcrumb a{color:#274b94;text-decoration:underline;text-underline-offset:2px}
+.ownerBreadcrumb span[aria-hidden]{font-size:24px;font-weight:300}
+@media(max-width:620px){.ownerBrand{padding:0 16px;min-height:60px}.ownerBreadcrumb{padding:10px 16px;gap:12px;min-height:58px;font-size:13px}}
+/* Tarifs horaires facultatifs par annonce */
+.hourlyPanel{margin-top:16px;border:1px solid #dbe4f0;border-radius:10px;padding:15px;background:#fff}
+.hourlySwitch{display:flex;align-items:center;gap:12px;cursor:pointer;color:#1f2d43}
+.hourlySwitch input{width:19px;height:19px;accent-color:#274b94;flex:none}
+.hourlySwitch strong{display:block;font-size:15px}.hourlySwitch small{display:block;color:#667085;font-size:12px;margin-top:3px}
+.hourlyRows{margin-top:15px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.hourlyRows[hidden]{display:none}
+.hourlyRow{border:1px solid #dfe5ee;border-radius:9px;padding:12px;min-width:0}
+.hourlyRow>label{display:flex;align-items:center;gap:7px;color:#274b94;font-weight:750;font-size:14px;cursor:pointer}
+.hourlyRow>label input{accent-color:#274b94;width:17px;height:17px}
+.hourlyAmounts{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px}
+.hourlyAmounts label{display:block;color:#57657a;font-size:11px;font-weight:700}
+.hourlyAmounts input{display:block;width:100%;min-width:0;min-height:39px;margin-top:5px;padding:7px;border:1px solid #c9d5e6;border-radius:8px;color:#172033;font-size:14px}
+.hourlyAmounts input:disabled{background:#f2f4f7;color:#8b95a3}
+@media(max-width:700px){.hourlyRows{grid-template-columns:1fr}}
+.rateToggle{display:flex;align-items:center;gap:7px;cursor:pointer;color:#274b94;font-weight:750;line-height:1.2}
+.rateToggle input{flex:none;width:17px;height:17px;accent-color:#274b94}
+.rateRow.rateDisabled{background:#f7f8fa;opacity:.65}
+.rateRow.rateDisabled .totalCell{background:#f1f2f5;color:#667085;border-color:#dfe5ee}
+.rateRow.rateDisabled .money input{background:#f1f2f5}
+.rateTable .rateRow.extraDuration{display:none}
+.rateTable.showExtra .rateRow.extraDuration{display:grid}
+.moreDurations{width:100%;padding:12px;border:0;border-top:1px solid #dfe5ee;background:#f7faff;color:#274b94;font-weight:750;cursor:pointer;text-align:center}
+.priceSaveBar{display:flex;justify-content:flex-end;padding:14px 0 0;background:#fff}
 </style>
 </head>
 <body>
+<header class="ownerNav" aria-label="Navigation Espace Propriétaire">
+ <div class="ownerBrand"><span class="logoCrop"><img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAPAA8ADASIAAhEBAxEB/8QAHAABAAICAwEAAAAAAAAAAAAAAAcIBQYBAwQC/8QARBABAAEDAwAECQgJBAICAwAAAAECAwQFBhEHITFBEhMXIlFUYXGRFDI2VXSBorIVI0JSYqGxwdEkM3LhQ1MlY3Pi8P/EABoBAQACAwEAAAAAAAAAAAAAAAAEBQECAwb/xAAsEQEAAgECBQQDAAEFAQAAAAAAAQIDBBESFCExURMiMkEFQnFhIzNSkaGB/9oADAMBAAIRAxEAPwCfwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA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AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH//Z" alt=""></span><span>AirBikes</span></div>
+ <nav class="ownerBreadcrumb" aria-label="Fil d’Ariane"><a href="#" onclick="event.preventDefault();showToast('Retour à l’Espace Propriétaire à relier dans Bubble')">Mon espace propriétaire</a><span aria-hidden="true">›</span><span aria-current="page">Mes annonces</span></nav>
+</header>
 <div class="wrap">
   <h1>Mes annonces</h1>
   <div class="sub">Gérez vos vélos et leur disponibilité à la location.</div>
@@ -896,6 +933,7 @@ h1{
       <button class="active" onclick="priceTab('short',this)">Courte durée</button>
       <button onclick="priceTab('long',this)">Longue durée</button>
     </div>
+    <div id="hourlyCreate"></div>
     <div class="recommend"><span>💡 <b>Tarifs recommandés</b> calculés à partir de la valeur du vélo. Vous pouvez tout modifier.</span><button type="button" onclick="applyRecommended()">Réappliquer les tarifs conseillés</button></div>
 <div class="rateTable" id="shortRates"></div>
     <div class="rateTable hidden" id="longRates"></div>
@@ -919,8 +957,10 @@ h1{
   <div class="priceModalBody">
    <div id="priceBikeHead"></div>
    <div class="priceTabs"><button class="active" onclick="actionPriceTab('short',this)">Courte durée</button><button onclick="actionPriceTab('long',this)">Longue durée</button></div>
+   <div id="hourlyPrice"></div>
    <div class="rateTable" id="actionShortRates"></div>
    <div class="rateTable hidden" id="actionLongRates"></div>
+   <div class="priceSaveBar"><button class="btn primary" type="button" onclick="savePrices()">Enregistrer les prix</button></div>
   </div>
  </div>
 </div>
@@ -1003,44 +1043,85 @@ function openPreview(i){
      <h2>${b.name}</h2>
      <div class="customerListingSpecs"><span>${b.type}</span><span>${b.size==='Unique'?'Taille unique':'Taille '+b.size}</span><span>${b.electric?'⚡ Électrique':'Musculaire'}</span></div>
      <div class="customerListingStock">${b.qty} vélo${b.qty>1?'s':''} proposé${b.qty>1?'s':''} à la location</div>
-     <div class="customerListingFooter"><div class="customerListingPrice"><span>PRIX À LA JOURNÉE</span><strong>${fmtMoney(b.dayPrice ?? 49).replace(' €','')} € <small>/ jour</small></strong><p>Choisissez vos dates pour voir le prix total</p></div><button class="customerListingAdd" type="button" title="Ajouter ce vélo" aria-label="Ajouter ${b.name}" onclick="showToast('Choisissez vos dates sur la page du loueur pour ajouter ce vélo')">Ajouter</button></div>
+     <div class="customerListingFooter"><div class="customerListingPrice"><span>PRIX À LA JOURNÉE</span><strong>${bikeDayPrice(b)===null?'Indisponible':fmtMoney(bikeDayPrice(b)).replace(' €','')+' € <small>/ jour</small>'}</strong><p>Choisissez vos dates pour voir le prix total</p></div><button class="customerListingAdd" type="button" title="Ajouter ce vélo" aria-label="Ajouter ${b.name}" onclick="showToast('Choisissez vos dates sur la page du loueur pour ajouter ce vélo')">Ajouter</button></div>
    </div>
  </article>`;
  openAction('previewOverlay');
 }
 function defaultShortRates(dayPrice){
- const rows=[{client:32,owner:25}];
- for(let i=1;i<=30;i++){const owner=Math.max(32,45-Math.floor((i-1)/3));rows.push({client:Math.round(owner/.82*100)/100,owner})}
+ const rows=[{client:32,owner:25,enabled:true}];
+ for(let i=1;i<=30;i++){const owner=Math.max(32,45-Math.floor((i-1)/3));rows.push({client:Math.round(owner/.82*100)/100,owner,enabled:true})}
  if(dayPrice!=null){rows[1].client=dayPrice;rows[1].owner=Math.round(dayPrice*.82*100)/100}
  return rows;
 }
 function readShortRates(container){
- return [...container.querySelectorAll('.rateRow')].map(row=>({client:Number(row.querySelector('.client input').value)||0,owner:Number(row.querySelector('.owner input').value)||0}));
+ return [...container.querySelectorAll('.rateRow')].map(row=>({client:Number(row.querySelector('.client input').value)||0,owner:Number(row.querySelector('.owner input').value)||0,enabled:row.querySelector('.rateToggle input').checked}));
 }
 function populateShortRates(container,rates){
  [...container.querySelectorAll('.rateRow')].forEach((row,i)=>{
   if(!rates[i])return;
   row.querySelector('.client input').value=rates[i].client;
   row.querySelector('.owner input').value=rates[i].owner;
-  updateRateTotals(row.querySelector('.client input'));
+  row.querySelector('.rateToggle input').checked=rates[i].enabled!==false;
+  rateAvailability(row.querySelector('.rateToggle input'),false);
  });
 }
+function defaultHourlyRates(){return [13,15,18].map((client,i)=>({hours:i+1,enabled:true,client,owner:Math.round(client*.82*100)/100}))}
+function hourlyPanelMarkup(rates,enabled,context){
+ const rows=(rates||defaultHourlyRates()).map((rate,index)=>`<div class="hourlyRow" data-hours="${index+1}">
+   <label><input class="hourlyAvailable" type="checkbox" ${rate.enabled?'checked':''} onchange="hourlyChanged('${context}')">${index+1} h disponible</label>
+   <div class="hourlyAmounts"><label>Prix locataire (€)<input class="hourlyClient" type="number" min="0" step="0.01" placeholder="Prix" value="${rate.client??''}" oninput="hourlyInput(this,'client','${context}')"></label>
+   <label>Vous recevez (€)<input class="hourlyOwner" type="number" min="0" step="0.01" placeholder="Prix" value="${rate.owner??''}" oninput="hourlyInput(this,'owner','${context}')"></label></div></div>`).join('');
+ return `<section class="hourlyPanel"><label class="hourlySwitch"><input class="hourlyEnabled" type="checkbox" ${enabled?'checked':''} onchange="hourlyChanged('${context}')"><span><strong>Proposer des tarifs à l’heure</strong><small>Facultatif · choisissez librement les prix de 1 h, 2 h et 3 h.</small></span></label><div class="hourlyRows" ${enabled?'':'hidden'}>${rows}</div></section>`;
+}
+function hourlyChanged(context){
+ const panel=document.querySelector('#'+context+' .hourlyPanel');if(!panel)return;
+ const active=panel.querySelector('.hourlyEnabled').checked;
+ panel.querySelector('.hourlyRows').hidden=!active;
+ panel.querySelectorAll('.hourlyRow').forEach(row=>{
+  const available=row.querySelector('.hourlyAvailable').checked;
+  row.querySelectorAll('.hourlyAmounts input').forEach(input=>input.disabled=!active||!available);
+ });
+}
+function hourlyInput(input,side,context){
+ const row=input.closest('.hourlyRow');
+ const other=row.querySelector(side==='client'?'.hourlyOwner':'.hourlyClient');
+ other.value=input.value===''?'':Math.round(Number(input.value)*(side==='client'?.82:1/.82)*100)/100;
+}
+function readHourly(context){
+ const panel=document.querySelector('#'+context+' .hourlyPanel');
+ return {hourlyEnabled:panel.querySelector('.hourlyEnabled').checked,hourlyRates:[...panel.querySelectorAll('.hourlyRow')].map((row,i)=>({hours:i+1,enabled:row.querySelector('.hourlyAvailable').checked,client:row.querySelector('.hourlyClient').value,owner:row.querySelector('.hourlyOwner').value}))};
+}
+function hourlyValid(data){return !data.hourlyEnabled||data.hourlyRates.every(rate=>!rate.enabled||(rate.client!==''&&rate.owner!==''&&Number(rate.client)>0&&Number(rate.owner)>0))}
+function savePrices(){
+ if(pricingIndex===null)return;
+ const hourly=readHourly('hourlyPrice');
+ if(!hourlyValid(hourly)){showToast('Renseignez les tarifs horaires proposés');return}
+ const bike=bikes[pricingIndex];
+ Object.assign(bike,hourly,{shortRates:readShortRates(actionShortRates),longRates:readLongRates(actionLongRates)});
+ bike.dayPrice=bikeDayPrice(bike);
+ closeAction('priceOverlay');showToast('Prix enregistrés');
+}
+function defaultLongRates(){return [['Sans engagement · 1 mois',89,65],['3 mois',79,57],['6 mois',67,47],['12 mois',52,35],['24 mois',46,30],['36 mois',42,27]].map(([label,client,owner])=>({label,client,owner,enabled:true}))}
+function readLongRates(container){return [...container.querySelectorAll('.rateRow')].map(row=>({label:row.dataset.label,client:Number(row.querySelector('.client input').value)||0,owner:Number(row.querySelector('.owner input').value)||0,enabled:row.querySelector('.rateToggle input').checked}))}
+function populateLongRates(container,rates){[...container.querySelectorAll('.rateRow')].forEach((row,i)=>{if(!rates[i])return;row.querySelector('.client input').value=rates[i].client;row.querySelector('.owner input').value=rates[i].owner;row.querySelector('.rateToggle input').checked=rates[i].enabled!==false;rateAvailability(row.querySelector('.rateToggle input'),false)})}
+function bikeDayPrice(b){return b.shortRates?.[1]?.enabled===false?null:b.shortRates?.[1]?.client??b.dayPrice??49}
 let pricingIndex=null;
 function buildActionRates(b){
  const rates=b.shortRates||defaultShortRates(b.dayPrice);
- actionShortRates.innerHTML=tableWrap(rates.map((r,i)=>rateRow(i===0?'Demi-journée':i===1?'1 jour':i+' jours',r.client,r.owner)).join(''));
- let lr=[['Sans engagement · 1 mois',89,65],['3 mois',79,57],['6 mois',67,47],['12 mois',52,35],['24 mois',46,30],['36 mois',42,27]].map(x=>rateRow(x[0],x[1],x[2],true)).join('');
- actionLongRates.innerHTML=tableWrap(lr,true);
+ actionShortRates.innerHTML=tableWrap(rates.map((r,i)=>rateRow(i===0?'Demi-journée':i===1?'1 jour':i+' jours',r.client,r.owner,false,r.enabled!==false,i>7)).join(''))+moreDurationsMarkup('actionShortRates');
+ actionLongRates.innerHTML=tableWrap((b.longRates||defaultLongRates()).map(r=>rateRow(r.label,r.client,r.owner,true,r.enabled!==false)).join(''),true);
+ refreshRateRows(actionShortRates);refreshRateRows(actionLongRates);
 }
 function openPrice(i){
  pricingIndex=i;const b=bikes[i];
  priceSummary.textContent=`${b.name} · Taille ${b.size}`;
  priceBikeHead.innerHTML=`<div class="priceBikeHead"><img src="${b.img}" alt=""><div><b>${b.name}</b><div class="meta">${b.type} · Taille ${b.size} · ${b.electric?'Électrique':'Musculaire'} · ×${b.qty}</div></div></div>`;
- buildActionRates(b);openAction('priceOverlay');
+ buildActionRates(b);hourlyPrice.innerHTML=hourlyPanelMarkup(b.hourlyRates,b.hourlyEnabled!==false,'hourlyPrice');hourlyChanged('hourlyPrice');openAction('priceOverlay');
 }
 function actionPriceTab(mode,b){
  b.parentElement.querySelectorAll('button').forEach(x=>x.classList.remove('active'));b.classList.add('active');
- actionShortRates.classList.toggle('hidden',mode!=='short');actionLongRates.classList.toggle('hidden',mode!=='long');
+ actionShortRates.classList.toggle('hidden',mode!=='short');hourlyPrice.classList.toggle('hidden',mode!=='short');actionLongRates.classList.toggle('hidden',mode!=='long');
 }
 let deleteIndex=null;
 function askDelete(i){deleteIndex=i;openAction('confirmOverlay')}
@@ -1070,7 +1151,7 @@ function updateBikePhoto(input){
 }
 function openModal(){
  selectedBikePhoto=null;document.getElementById('bikePhotoInput').value='';showPhotoPreview(null,null);resetBikeDescription();
- editingIndex=null;buildRates();modalTitle.textContent='Créer une nouvelle annonce';saveBikeButton.textContent='Créer l’annonce';
+ editingIndex=null;buildRates();hourlyCreate.innerHTML=hourlyPanelMarkup(null,true,'hourlyCreate');hourlyChanged('hourlyCreate');modalTitle.textContent='Créer une nouvelle annonce';saveBikeButton.textContent='Créer l’annonce';
  overlay.classList.add('open');document.body.style.overflow='hidden';updateSummary();
 }
 function closeModal(){overlay.classList.remove('open');document.body.style.overflow=''}
@@ -1090,15 +1171,21 @@ function fmtMoney(v){
  const n=Math.round((Number(v)||0)*100)/100;
  return n.toLocaleString('fr-FR',{minimumFractionDigits:Number.isInteger(n)?0:2,maximumFractionDigits:2})+' €';
 }
-function rateRow(label,client,owner,monthly=false){
+function rateRow(label,client,owner,monthly=false,enabled=true,extra=false){
  const mult=durationMultiplier(label,monthly);
- return `<div class="rateRow fiveCols" data-mult="${mult}">
-   <div class="rateDur">${label}</div>
+ return `<div class="rateRow fiveCols ${extra?'extraDuration':''}" data-mult="${mult}" data-label="${label}">
+   <div class="rateDur"><label class="rateToggle"><input type="checkbox" ${enabled?'checked':''} onchange="rateAvailability(this)"><span>${label}</span></label></div>
    <div class="pf client"><div class="money"><input type="number" step="0.01" value="${client}" oninput="fromClient(this)"><span>${monthly?'€/mois':'€/jour'}</span></div></div>
    <div class="pf owner"><div class="money"><input type="number" step="0.01" value="${owner}" oninput="fromOwner(this)"><span>${monthly?'€/mois':'€/jour'}</span></div></div>
    <div class="totalCell clientTotal">${fmtMoney(client*mult)}</div>
    <div class="totalCell ownerTotal">${fmtMoney(owner*mult)}</div>
  </div>`;
+}
+function moreDurationsMarkup(id){return `<button class="moreDurations" type="button" onclick="toggleMoreDurations('${id}',this)" aria-expanded="false">Afficher les autres durées (8 à 30 jours)</button>`}
+function toggleMoreDurations(id,button){
+ const expanded=document.getElementById(id).classList.toggle('showExtra');
+ button.textContent=expanded?'Masquer les autres durées':'Afficher les autres durées (8 à 30 jours)';
+ button.setAttribute('aria-expanded',String(expanded));
 }
 function tableWrap(rows,monthly=false){
  return `<div class="rateHead fiveCols">
@@ -1109,31 +1196,33 @@ function tableWrap(rows,monthly=false){
    <div class="ownerH">${monthly?'TOTAL REÇU ENGAGEMENT':'TOTAL REÇU'}</div>
  </div><div class="rateRows">${rows}</div>`;
 }
+function refreshRateRows(container){container.querySelectorAll('.rateRow').forEach(row=>rateAvailability(row.querySelector('.rateToggle input'),false))}
+function rateAvailability(toggle,persist=true){
+ const row=toggle.closest('.rateRow'),enabled=toggle.checked;
+ row.classList.toggle('rateDisabled',!enabled);
+ row.querySelectorAll('.money input').forEach(input=>input.disabled=!enabled);
+ updateRateTotals(toggle,persist);
+}
 function updateRateTotals(input){
- const row=input.closest('.rateRow');
- if(!row)return;
+ const row=input.closest('.rateRow');if(!row)return;
  const mult=Number(row.dataset.mult)||1;
  const client=Number(row.querySelector('.client input')?.value)||0;
  const owner=Number(row.querySelector('.owner input')?.value)||0;
- const ct=row.querySelector('.clientTotal');
- const ot=row.querySelector('.ownerTotal');
- if(ct)ct.textContent=fmtMoney(client*mult);
- if(ot)ot.textContent=fmtMoney(owner*mult);
- if(row.closest('#actionShortRates')&&pricingIndex!==null){
-  const bike=bikes[pricingIndex];bike.shortRates=readShortRates(actionShortRates);
-  bike.dayPrice=bike.shortRates[1].client;
- }
+ const enabled=row.querySelector('.rateToggle input').checked;
+ const ct=row.querySelector('.clientTotal'),ot=row.querySelector('.ownerTotal');
+ if(ct)ct.textContent=enabled?fmtMoney(client*mult):'—';
+ if(ot)ot.textContent=enabled?fmtMoney(owner*mult):'—';
 }
 function buildRates(){
  let rows=rateRow('Demi-journée',32,25);
- for(let i=1;i<=30;i++){let o=Math.max(32,45-Math.floor((i-1)/3));rows+=rateRow(i===1?'1 jour':i+' jours',Math.round(o/.82*100)/100,o)}
- shortRates.innerHTML=tableWrap(rows);
- let lr=[['Sans engagement · 1 mois',89,65],['3 mois',79,57],['6 mois',67,47],['12 mois',52,35],['24 mois',46,30],['36 mois',42,27]].map(x=>rateRow(x[0],x[1],x[2],true)).join('');
- longRates.innerHTML=tableWrap(lr,true);
+ for(let i=1;i<=30;i++){let o=Math.max(32,45-Math.floor((i-1)/3));rows+=rateRow(i===1?'1 jour':i+' jours',Math.round(o/.82*100)/100,o,false,true,i>7)}
+ shortRates.innerHTML=tableWrap(rows)+moreDurationsMarkup('shortRates');
+ longRates.innerHTML=tableWrap(defaultLongRates().map(r=>rateRow(r.label,r.client,r.owner,true,r.enabled)).join(''),true);
+ refreshRateRows(shortRates);refreshRateRows(longRates);
 }
 function fromClient(el){el.closest('.rateRow').querySelector('.owner input').value=Math.round(Number(el.value)*.82*100)/100;updateRateTotals(el)}
 function fromOwner(el){el.closest('.rateRow').querySelector('.client input').value=Math.round(Number(el.value)/.82*100)/100;updateRateTotals(el)}
-function priceTab(mode,b){document.querySelectorAll('.priceTabs button').forEach(x=>x.classList.remove('active'));b.classList.add('active');shortRates.classList.toggle('hidden',mode!=='short');longRates.classList.toggle('hidden',mode!=='long')}
+function priceTab(mode,b){b.parentElement.querySelectorAll('button').forEach(x=>x.classList.remove('active'));b.classList.add('active');shortRates.classList.toggle('hidden',mode!=='short');hourlyCreate.classList.toggle('hidden',mode!=='short');longRates.classList.toggle('hidden',mode!=='long')}
 
 let editingIndex=null;
 function updateSummary(){
@@ -1167,6 +1256,8 @@ function openEdit(i){
  motor.classList.toggle('electric',b.electric);
  motor.querySelectorAll('button').forEach((x,j)=>x.classList.toggle('active',j===(b.electric?1:0)));
  populateShortRates(shortRates,b.shortRates||defaultShortRates(b.dayPrice));
+ populateLongRates(longRates,b.longRates||defaultLongRates());
+ hourlyCreate.innerHTML=hourlyPanelMarkup(b.hourlyRates,b.hourlyEnabled!==false,'hourlyCreate');hourlyChanged('hourlyCreate');
  overlay.classList.add('open');document.body.style.overflow='hidden'; updateSummary();
 }
 
@@ -1176,8 +1267,9 @@ function createBike(){
  const model=fields.find(x=>x.parentElement?.querySelector('label')?.textContent==='Modèle')?.value||'Vélo';
  const selects=[...document.querySelectorAll('.modalBody select')];
  const old=editingIndex!==null?bikes[editingIndex]:null;
- const obj={name:(brand+' '+model).trim(),type:selects[0]?.value||'VTT',size:selects[1]?.value||'L',electric:motor.classList.contains('electric'),qty:Number(modalQty.value)||1,active:old?old.active:true,img:selectedBikePhoto||(old?old.img:bikes[0].img),description:document.getElementById('bikeDescription').value.trim(),shortRates:readShortRates(shortRates)};
- obj.dayPrice=obj.shortRates[1].client;
+ const hourly=readHourly('hourlyCreate');if(!hourlyValid(hourly)){showToast('Renseignez les tarifs horaires proposés');return}
+ const obj={...hourly,name:(brand+' '+model).trim(),type:selects[0]?.value||'VTT',size:selects[1]?.value||'L',electric:motor.classList.contains('electric'),qty:Number(modalQty.value)||1,active:old?old.active:true,img:selectedBikePhoto||(old?old.img:bikes[0].img),description:document.getElementById('bikeDescription').value.trim(),shortRates:readShortRates(shortRates),longRates:readLongRates(longRates)};
+ obj.dayPrice=bikeDayPrice(obj);
  if(editingIndex===null)bikes.unshift(obj); else bikes[editingIndex]=obj;
  editingIndex=null;render();closeModal();
 }
